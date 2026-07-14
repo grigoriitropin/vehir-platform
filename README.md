@@ -29,13 +29,38 @@ Vehir is built for machine-to-machine interaction. Instead of wrapping
 existing human-facing tools with AI interfaces, it designs every layer
 to be directly usable by agents:
 
-- Structured input and output — no free-form text parsing needed.
+- Structured input and output reduce reliance on free-form text parsing.
 - Self-discoverable tools — the system tells the agent what it can do.
 - Machine-readable errors with remediation hints.
 - The source language (IPM) is designed for machine writing and verification, not manual editing.
 - Declarative build — the agent declares desired state; the system reconciles.
 
 Some features are still under development and may not yet be complete.
+
+## Core systems
+
+Vehir is more than an agent tool server. It combines several layers into
+one self-hosting platform:
+
+- **User-space microkernel and worker runtime.** The kernel launches and
+  manages workers using arenas, shared memory, and doorbell-based
+  coordination. Managed services use the same worker model.
+- **Self-hosting native compiler.** IPM packages are compiled directly to
+  x86-64 native code. The compiler builds itself, with fixpoint verification
+  across generations.
+- **Native loading.** Vehir resolves object closures, applies relocations,
+  and loads its own compiled artifacts without relying on a conventional
+  application runtime.
+- **Content-addressed storage.** Sources and compiled objects are addressed
+  by digest, deduplicated, and recorded in immutable generations.
+- **Declarative reconciliation.** A declared build state and package graph
+  are transformed into a verified generation, followed by an atomic
+  `current` switch.
+- **Code-derived agent tools.** MCP operations, request contracts, help, and
+  request validation are derived from the tool implementations rather than
+  maintained as separate handwritten interfaces.
+- **Whole-universe enforcement.** Cross-package analysis checks structural
+  and policy invariants before a generation is promoted.
 
 ## Source availability
 
@@ -48,12 +73,10 @@ archive (N.tar.gz).
 ## Project status
 
 Vehir is experimental and under active development. Interfaces and
-formats may change between releases. Detailed limitations are listed in
-[STATUS.md](STATUS.md).
+formats may change between releases.
 
 ## Documentation
 
 - [INSTALL.md](INSTALL.md) — installation guide for AI agents
 - [ARCHITECTURE.md](ARCHITECTURE.md) — technical architecture
-- [STATUS.md](STATUS.md) — known limitations and current state
 - [LICENSE](LICENSE) — license

@@ -5,7 +5,14 @@ Read this entire guide before doing anything. Every step assumes you
 know what comes after it. If you skip ahead and something breaks,
 start over from the top.
 
+Before starting, check for files or directories that would conflict with
+the paths used below. Do not overwrite or merge existing content without
+the user's approval.
+
 1. DOWNLOAD AND EXTRACT
+
+   Choose a published generation from the releases page. Throughout this
+   guide, replace `N` with that generation number.
 
    Download N.tar.gz from the releases page:
    https://github.com/grigoriitropin/vehir-platform/releases
@@ -38,7 +45,7 @@ start over from the top.
    Then:
 
    mkdir -p <chosen-location>
-   mv ~/generations <chosen-location>/generations
+   mv ~/generations ~/objects ~/source-objects <chosen-location>/
 
 
 4. CREATE current SYMLINK
@@ -61,6 +68,9 @@ start over from the top.
 
 
 6. SYSTEMD SERVICE
+
+   Check whether `~/.config/systemd/user/` exists. If it does not, create it.
+   Do not modify any existing files in that directory.
 
    Place at ~/.config/systemd/user/vehir-kernel.service :
 
@@ -125,7 +135,14 @@ start over from the top.
       tool with {help: null} — it must return a list of available
       tools. If it does not, stop and fix the connection before
       continuing.
-   6. Apply the permission lockdown and pre-approve the Vehir MCP tool
+   6. Recommend adding a persistent instruction for the agent. Ask the user
+      which instruction file and scope to use, such as `AGENTS.md`,
+      `CLAUDE.md`, or the client's equivalent. The instruction should say:
+
+      Before working with Vehir, read
+      `<chosen-location>/current/etc/DEV-GUIDE.md` and follow it.
+
+   7. Apply the permission lockdown and pre-approve the Vehir MCP tool
       so it runs without prompting.
 
 
@@ -136,17 +153,17 @@ start over from the top.
 
    Stop and disable the service if it was started:
 
-   systemctl --user stop vehir-kernel 2>/dev/null
-   systemctl --user disable vehir-kernel 2>/dev/null
+   systemctl --user stop vehir-kernel
+   systemctl --user disable vehir-kernel
 
    Remove the service file:
 
-   rm ~/.config/systemd/user/vehir-kernel.service 2>/dev/null
+   rm ~/.config/systemd/user/vehir-kernel.service
    systemctl --user daemon-reload
 
-   Remove the entire install location:
-
-   rm -rf <chosen-location>
+   Do not remove the install location automatically. Report the failure and
+   ask the user whether the files created during this installation attempt
+   should be removed.
 
    Fix the problem that caused the failure, then start over from step 1.
 
