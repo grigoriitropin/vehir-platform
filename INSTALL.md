@@ -1,14 +1,18 @@
-VEHiR INSTALL (generation 2478)
-===============================
+VEHiR INSTALL
+=============
+
+Read this entire guide before doing anything. Every step assumes you
+know what comes after it. If you skip ahead and something breaks,
+start over from the top.
 
 1. DOWNLOAD AND EXTRACT
 
-   Download vehir-release-N.tar.gz from the releases page:
+   Download N.tar.gz from the releases page:
    https://github.com/grigoriitropin/vehir-platform/releases
 
    Then extract:
 
-   tar -xzf ~/vehir-release-N.tar.gz -C ~
+   tar -xzf ~/N.tar.gz -C ~
 
 
 2. READ THE GUIDE
@@ -27,6 +31,10 @@ VEHiR INSTALL (generation 2478)
    If they choose a different directory, use that path throughout the
    following steps.
 
+   Always convert the chosen path to an absolute form before using it in
+   any configuration file. If the user gives a path with ~ (tilde),
+   resolve it to the actual home directory path first.
+
    Then:
 
    mkdir -p <chosen-location>
@@ -35,7 +43,7 @@ VEHiR INSTALL (generation 2478)
 
 4. CREATE current SYMLINK
 
-   ln -sf <chosen-location>/generations/N <chosen-location>/current
+   ln -sf generations/N <chosen-location>/current
 
 
 5. FIX HARDCODED PATHS
@@ -111,5 +119,43 @@ VEHiR INSTALL (generation 2478)
       commands on its own. Vehir becomes the sole capability provider.
    3. Connect the MCP server FIRST. Do not apply lockdown before MCP —
       the agent needs MCP access to continue.
-   4. Apply the permission lockdown and pre-approve the Vehir MCP tool
+   4. Ask the user to restart the agent so the MCP connection takes
+      effect.
+   5. After restart, verify the MCP connection works. Call the Vehir
+      tool with {help: null} — it must return a list of available
+      tools. If it does not, stop and fix the connection before
+      continuing.
+   6. Apply the permission lockdown and pre-approve the Vehir MCP tool
       so it runs without prompting.
+
+
+8. IF SOMETHING GOES WRONG
+
+   If the installation fails partway through, do not leave the system
+   in a half-configured state.
+
+   Stop and disable the service if it was started:
+
+   systemctl --user stop vehir-kernel 2>/dev/null
+   systemctl --user disable vehir-kernel 2>/dev/null
+
+   Remove the service file:
+
+   rm ~/.config/systemd/user/vehir-kernel.service 2>/dev/null
+   systemctl --user daemon-reload
+
+   Remove the entire install location:
+
+   rm -rf <chosen-location>
+
+   Fix the problem that caused the failure, then start over from step 1.
+
+
+9. AFTER SUCCESSFUL INSTALLATION
+
+   Once everything works, delete the downloaded archive:
+
+   rm ~/N.tar.gz
+
+   It has served its purpose and can always be downloaded again from
+   the releases page.
