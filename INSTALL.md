@@ -104,10 +104,14 @@ the user's approval.
 
    -- Identify your agent --
 
-   If you know which agent you are running in, open the corresponding file
-   in <chosen-location>/current/etc/integrations/mcp/ and follow it.
-   If you do not know, ask the user which agent they are using, then open
-   the corresponding file.
+   If you know which agent you are running in, read the corresponding file
+   in <chosen-location>/current/etc/integrations/mcp/ completely before
+   changing any configuration. If you do not know, ask the user which agent
+   they are using, then read the corresponding file.
+
+   Do not apply lockdown while reading the integration guide. Use a
+   no-lockdown configuration for the initial MCP connection, then follow the
+   setup flow below.
 
    If there is no file for your agent, read an existing one to understand
    the pattern, then apply the same principles using your agent's own docs.
@@ -119,7 +123,7 @@ the user's approval.
 
    -- Setup flow --
 
-   Every integration guide follows the same sequence:
+   Use this sequence regardless of which integration guide you read:
 
    1. Check for existing config files at the relevant locations.
    2. Ask the user: which scope (global / per-project / local), whether
@@ -127,8 +131,9 @@ the user's approval.
       When asking about lockdown, explain clearly what it means: the
       agent will be unable to read, write, edit, search, or run shell
       commands on its own. Vehir becomes the sole capability provider.
-   3. Connect the MCP server FIRST. Do not apply lockdown before MCP —
-      the agent needs MCP access to continue.
+      Record the user's choice, but do not apply lockdown yet.
+   3. Connect the MCP server using a no-lockdown configuration. Do not apply
+      lockdown before MCP — the agent needs MCP access to continue.
    4. Ask the user to restart the agent so the MCP connection takes
       effect.
    5. After restart, verify the MCP connection works. Call the Vehir
@@ -142,8 +147,12 @@ the user's approval.
       Before working with Vehir, read
       `<chosen-location>/current/etc/DEV-GUIDE.md` and follow it.
 
-   7. Apply the permission lockdown and pre-approve the Vehir MCP tool
-      so it runs without prompting.
+   7. If the user requested it, apply the permission lockdown and
+      pre-approve the Vehir MCP tool so it runs without prompting.
+   8. Ask the user to restart the agent again so the persistent instruction
+      and permission lockdown take effect.
+   9. After restart, call Vehir with {help: null} again. If it fails, stop
+      and ask the user to restore the previous permission configuration.
 
 
 8. IF SOMETHING GOES WRONG
