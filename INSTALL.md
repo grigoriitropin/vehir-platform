@@ -9,6 +9,11 @@ Before starting, check for files or directories that would conflict with
 the paths used below. Do not overwrite or merge existing content without
 the user's approval.
 
+The release archive is not a binary-only distribution. It contains the
+complete IPM source tree together with the native artifacts needed to
+bootstrap that exact generation. The source is available under
+`generations/N/sources/` before any Vehir component is started.
+
 1. DOWNLOAD AND EXTRACT
 
    Choose a published generation from the releases page. Throughout this

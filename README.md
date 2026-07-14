@@ -64,11 +64,11 @@ one self-hosting platform:
 
 ## Source availability
 
-This GitHub repository contains documentation only. It does not contain
-the Vehir source code.
-
-The full IPM source tree is included inside every published generation
-archive (N.tar.gz).
+This GitHub repository contains documentation only. Release archives are
+not binary-only distributions: every published generation archive
+(`N.tar.gz`) contains the complete IPM source tree together with the native
+artifacts needed to bootstrap that exact generation. The source can be
+inspected before any Vehir component is started.
 
 ## Project status
 
