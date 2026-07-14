@@ -14,12 +14,14 @@ The current implementation provides the foundations of this environment, includi
 
 ## Installation
 
-Send the following instruction to your AI agent:
+Copy the following and send it to your AI agent:
 
-> [!IMPORTANT]
-> Read the complete installation guide at  
-> https://github.com/grigoriitropin/vehir-platform/blob/main/INSTALL.md  
-> before taking any action. Follow it from beginning to end, and ask the user whenever it requires a choice or information about the host system.
+```
+Read the complete installation guide at
+https://github.com/grigoriitropin/vehir-platform/blob/main/INSTALL.md
+before taking any action. Follow it from beginning to end, and ask the
+user whenever it requires a choice or information about the host system.
+```
 
 ## Why AI-native
 

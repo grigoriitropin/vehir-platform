@@ -1,4 +1,4 @@
-VEHiR INSTALL
+VEHIR INSTALL
 =============
 
 Read this entire guide before doing anything. Every step assumes you
