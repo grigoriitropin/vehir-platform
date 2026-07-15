@@ -542,6 +542,12 @@ The supervisor starts declared services at boot from
 configuration files in `etc/vsm/`. Services are loaded
 through the runtime linker as workers.
 
+### Known limitation
+
+- The runtime does not yet perform graceful shutdown.
+- Restarting while the previous kernel still holds the MCP listening port
+  can put the service into a restart loop until the port is released.
+
 ## 18. Export and distribution
 
 The `export-generation-toward-relocatable-target` tool materializes the
