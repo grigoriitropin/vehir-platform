@@ -80,3 +80,27 @@ formats may change between releases.
 - [INSTALL.md](INSTALL.md) — installation guide for AI agents
 - [ARCHITECTURE.md](ARCHITECTURE.md) — technical architecture
 - [LICENSE](LICENSE) — license
+
+## Uninstallation
+
+Before removing anything, identify the actual Vehir installation location
+and ask the user to confirm it. Stop and remove the user service:
+
+```bash
+systemctl --user disable --now vehir-kernel.service
+rm ~/.config/systemd/user/vehir-kernel.service
+systemctl --user daemon-reload
+```
+
+Remove only the Vehir MCP entry from the agent client's configuration and
+the persistent Vehir instruction added during installation, preserving all
+unrelated configuration.
+
+The installation directory is the complete Vehir content-addressed store.
+It contains all generations, compiled objects, and source objects. After the
+user confirms that none of this state is needed, remove the confirmed absolute
+installation location:
+
+```bash
+rm -rf -- <confirmed-absolute-installation-location>
+```
