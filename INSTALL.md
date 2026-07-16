@@ -34,9 +34,10 @@ bootstrap that exact generation. The source is available under
    you will need.
 
 
-3. CHOOSE INSTALL LOCATION
+3. CREATE THE VEHIR STORE ROOT
 
-   Ask the user where Vehir should be installed. Recommend the default:
+   Ask the user where the Vehir store should be installed. Recommend the
+   default:
 
        ~/.address-objects-using-content-hashes
 
@@ -47,10 +48,30 @@ bootstrap that exact generation. The source is available under
    any configuration file. If the user gives a path with ~ (tilde),
    resolve it to the actual home directory path first.
 
+   The chosen location is the Vehir store root. After this step its
+   relevant layout is:
+
+       <INSTALL_ROOT>/
+       ├── current -> generations/N
+       └── generations/
+           └── N/
+
+   `current` must be inside `<INSTALL_ROOT>`. It is the stable entry point
+   to the active generation: the service, MCP configuration, and persistent
+   agent instruction all refer to `<INSTALL_ROOT>/current/...`.
+   Generations are immutable and reconciliation may promote a later one.
+   `current` is the atomic selector for the active known-good generation.
+   Do not point services directly at `generations/N` and do not place
+   `current` outside the store root.
+
+   Move only the extracted `generations/` directory into the store root.
+   Other store directories are created automatically when reconciliation
+   needs them.
+
    Then:
 
    mkdir -p <chosen-location>
-   mv ~/generations ~/objects ~/source-objects <chosen-location>/
+   mv ~/generations <chosen-location>/
 
 
 4. CREATE current SYMLINK
@@ -114,6 +135,12 @@ bootstrap that exact generation. The source is available under
    changing any configuration. If you do not know, ask the user which agent
    they are using, then read the corresponding file.
 
+   Integration-guide configurations are examples of valid Vehir settings,
+   not files to overwrite verbatim. Preserve unrelated MCP servers,
+   permissions, settings, and project-specific rules. Merge only the
+   Vehir-related entries after reading the existing configuration and
+   creating a backup.
+
    Do not apply lockdown while reading the integration guide. Use a
    no-lockdown configuration for the initial MCP connection, then follow the
    setup flow below.
@@ -131,33 +158,58 @@ bootstrap that exact generation. The source is available under
    Use this sequence regardless of which integration guide you read:
 
    1. Check for existing config files at the relevant locations.
-   2. Ask the user: which scope (global / per-project / local), whether
-      to apply lockdown, and how to merge if a config already exists.
-      When asking about lockdown, explain clearly what it means: the
-      agent will be unable to read, write, edit, search, or run shell
-      commands on its own. Vehir becomes the sole capability provider.
-      Record the user's choice, but do not apply lockdown yet.
-   3. Connect the MCP server using a no-lockdown configuration. Do not apply
+   2. Ask the user which scope to use, whether to apply lockdown, and how
+      to merge if a config already exists. Recommend per-project or local
+      scope for evaluation and testing. Recommend global scope only for
+      long-term Vehir-only use.
+
+      Lockdown is recommended for safe autonomous Vehir work, but remains
+      optional. It prevents the agent from using its built-in filesystem,
+      editing, search, and shell tools to bypass Vehir's capability
+      boundary. This protects the content-addressed store and active
+      generation from direct changes, accidental writes, manual generation
+      switching, and other actions that bypass reconciliation and its
+      verification gates.
+
+      With lockdown enabled, the agent continues to work through the
+      Vehir MCP tool. The restriction applies only to the agent client's
+      built-in tools. It does not change Linux permissions, prevent the
+      user from using their shell, or make the user's configuration
+      permanently read-only. Record the user's choice, but do not apply
+      lockdown yet.
+   3. Create a backup of every configuration file that will be changed.
+      Show the exact Vehir-related merge and obtain the user's confirmation
+      before writing it.
+   4. Connect the MCP server using a no-lockdown configuration. Do not apply
       lockdown before MCP — the agent needs MCP access to continue.
-   4. Ask the user to restart the agent so the MCP connection takes
+   5. Ask the user to restart the agent so the MCP connection takes
       effect.
-   5. After restart, verify the MCP connection works. Call the Vehir
+   6. After restart, verify the MCP connection works. Call the Vehir
       tool with {help: null} — it must return a list of available
       tools. If it does not, stop and fix the connection before
       continuing.
-   6. Recommend adding a persistent instruction for the agent. Ask the user
+   7. Once the MCP connection works, delete the downloaded archive:
+
+      rm ~/N.tar.gz
+
+      It has served its purpose and can always be downloaded again from
+      the releases page. Do this before lockdown, while the agent still
+      has its ordinary host-side file access.
+   8. Recommend adding a persistent instruction for the agent. Ask the user
       which instruction file and scope to use, such as `AGENTS.md`,
       `CLAUDE.md`, or the client's equivalent. The instruction should say:
 
       Before working with Vehir, read
       `<chosen-location>/current/etc/DEV-GUIDE.md` and follow it.
 
-   7. If the user requested it, apply the permission lockdown and
+   9. If the user requested it, apply the permission lockdown and
       pre-approve the Vehir MCP tool so it runs without prompting.
-   8. Ask the user to restart the agent again so the persistent instruction
+   10. Ask the user to restart the agent again so the persistent instruction
       and permission lockdown take effect.
-   9. After restart, call Vehir with {help: null} again. If it fails, stop
-      and ask the user to restore the previous permission configuration.
+   11. After restart, call Vehir with {help: null} again. If it fails, stop
+       and ask the user to restore the backed-up client configuration or
+       remove only the Vehir lockdown rules. Do not bypass the restriction
+       through another host-side tool.
 
 
 8. IF SOMETHING GOES WRONG
@@ -180,13 +232,3 @@ bootstrap that exact generation. The source is available under
    should be removed.
 
    Fix the problem that caused the failure, then start over from step 1.
-
-
-9. AFTER SUCCESSFUL INSTALLATION
-
-   Once everything works, delete the downloaded archive:
-
-   rm ~/N.tar.gz
-
-   It has served its purpose and can always be downloaded again from
-   the releases page.
