@@ -557,6 +557,8 @@ include a `current` symlink, and host-specific absolute paths must still be
 corrected during installation.
 
 GitHub releases carry the generation archive (`N.tar.gz`) as
-the primary artifact. The Git repository itself contains
-only documentation — the full IPM source tree is inside the
-archive.
+the primary, authoritative artifact. The repository also
+contains a convenience mirror of the source tree under
+`sources-N/` for browsing. The tarball is always the
+canonical copy; the repo mirror may be updated less
+frequently.

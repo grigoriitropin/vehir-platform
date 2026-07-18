@@ -64,11 +64,13 @@ one self-hosting platform:
 
 ## Source availability
 
-This GitHub repository contains documentation only. Release archives are
-not binary-only distributions: every published generation archive
-(`N.tar.gz`) contains the complete IPM source tree together with the native
-artifacts needed to bootstrap that exact generation. The source can be
-inspected before any Vehir component is started.
+This GitHub repository contains documentation and a convenience mirror of
+the latest generation's IPM source tree. Release archives are the
+authoritative distribution: every published release (`N.tar.gz`) contains
+the complete IPM source tree together with native artifacts. The same
+sources are mirrored in the repo under `sources-N/` for browsing without
+downloading the archive, but the repo mirror may lag behind the latest
+release.
 
 ## Project status
 

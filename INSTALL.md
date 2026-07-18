@@ -12,7 +12,10 @@ the user's approval.
 The release archive is not a binary-only distribution. It contains the
 complete IPM source tree together with the native artifacts needed to
 bootstrap that exact generation. The source is available under
-`generations/N/sources/` before any Vehir component is started.
+`generations/N/sources/` before any Vehir component is started. The same
+IPM source tree is also mirrored in the repository under `sources-N/` for
+inspection without downloading the archive. The release tarball remains the
+authoritative copy — the repo mirror may lag.
 
 1. DOWNLOAD AND EXTRACT
 
