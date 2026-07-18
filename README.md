@@ -75,7 +75,7 @@ release.
 ## Project status
 
 Vehir is experimental and under active development. Interfaces and
-formats may change between releases.
+formats may change between releases. All source code is AI-generated.
 
 ## Documentation
 
